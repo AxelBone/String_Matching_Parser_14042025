@@ -1,0 +1,97 @@
+[
+  {
+    "start": 314,
+    "length": 2,
+    "sentence": "mi",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001658"
+        ],
+        "hpoName": "mi",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 839,
+    "length": 9,
+    "sentence": "hypotonie",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001252"
+        ],
+        "hpoName": "hypotonie",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 864,
+    "length": 10,
+    "sentence": "maladresse",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0002312"
+        ],
+        "hpoName": "maladresse",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1358,
+    "length": 19,
+    "sentence": "intérêts restreints",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:4000070"
+        ],
+        "hpoName": "intérêts restreints",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1725,
+    "length": 11,
+    "sentence": "hyperlaxité",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001382"
+        ],
+        "hpoName": "hyperlaxité",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  }
+]

@@ -1,0 +1,97 @@
+[
+  {
+    "start": 381,
+    "length": 11,
+    "sentence": "hémarthrose",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0005261"
+        ],
+        "hpoName": "hémarthrose",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 475,
+    "length": 10,
+    "sentence": "ecchymoses",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0031364"
+        ],
+        "hpoName": "ecchymoses",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1182,
+    "length": 12,
+    "sentence": "hémophilie a",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0003125"
+        ],
+        "hpoName": "hémophilie a",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1322,
+    "length": 9,
+    "sentence": "épistaxis",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000421"
+        ],
+        "hpoName": "épistaxis",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1344,
+    "length": 12,
+    "sentence": "hémarthroses",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0005261"
+        ],
+        "hpoName": "hémarthroses",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  }
+]

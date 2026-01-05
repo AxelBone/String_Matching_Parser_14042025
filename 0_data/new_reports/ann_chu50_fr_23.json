@@ -1,0 +1,97 @@
+[
+  {
+    "start": 599,
+    "length": 19,
+    "sentence": "intérêts restreints",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:4000070"
+        ],
+        "hpoName": "intérêts restreints",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 879,
+    "length": 21,
+    "sentence": "comportement agressif",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000718"
+        ],
+        "hpoName": "comportement agressif",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1295,
+    "length": 12,
+    "sentence": "astigmatisme",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000483"
+        ],
+        "hpoName": "astigmatisme",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1902,
+    "length": 29,
+    "sentence": "trouble du spectre autistique",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000729"
+        ],
+        "hpoName": "trouble du spectre autistique",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1945,
+    "length": 17,
+    "sentence": "retard de langage",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000750"
+        ],
+        "hpoName": "retard de langage",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  }
+]

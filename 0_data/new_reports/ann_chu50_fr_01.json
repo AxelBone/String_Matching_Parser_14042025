@@ -1,0 +1,78 @@
+[
+  {
+    "start": 315,
+    "length": 7,
+    "sentence": "anonyme",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0009892"
+        ],
+        "hpoName": "anonyme",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 693,
+    "length": 8,
+    "sentence": "handicap",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0003474"
+        ],
+        "hpoName": "handicap",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 708,
+    "length": 13,
+    "sentence": "petite taille",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0004322"
+        ],
+        "hpoName": "petite taille",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1632,
+    "length": 22,
+    "sentence": "macrocéphalie relative",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0004482"
+        ],
+        "hpoName": "macrocéphalie relative",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  }
+]

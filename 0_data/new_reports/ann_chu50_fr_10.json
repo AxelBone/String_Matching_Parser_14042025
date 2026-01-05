@@ -1,0 +1,211 @@
+[
+  {
+    "start": 154,
+    "length": 17,
+    "sentence": "retard de langage",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000750"
+        ],
+        "hpoName": "retard de langage",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 237,
+    "length": 7,
+    "sentence": "obésité",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001513"
+        ],
+        "hpoName": "obésité",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 667,
+    "length": 4,
+    "sentence": "rciu",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001511"
+        ],
+        "hpoName": "rciu",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 936,
+    "length": 17,
+    "sentence": "retard de langage",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000750"
+        ],
+        "hpoName": "retard de langage",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1664,
+    "length": 9,
+    "sentence": "hypotonie",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001252"
+        ],
+        "hpoName": "hypotonie",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 2045,
+    "length": 19,
+    "sentence": "surcharge pondérale",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0025502"
+        ],
+        "hpoName": "surcharge pondérale",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 2349,
+    "length": 9,
+    "sentence": "épilepsie",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001250"
+        ],
+        "hpoName": "épilepsie",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 2365,
+    "length": 18,
+    "sentence": "trouble du sommeil",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0002360"
+        ],
+        "hpoName": "trouble du sommeil",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 2619,
+    "length": 21,
+    "sentence": "anomalie de la bouche",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000153"
+        ],
+        "hpoName": "anomalie de la bouche",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 2878,
+    "length": 7,
+    "sentence": "obésité",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001513"
+        ],
+        "hpoName": "obésité",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 3138,
+    "length": 13,
+    "sentence": "petite taille",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0004322"
+        ],
+        "hpoName": "petite taille",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  }
+]

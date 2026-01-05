@@ -1,0 +1,230 @@
+[
+  {
+    "start": 185,
+    "length": 32,
+    "sentence": "dilatation de l'aorte ascendante",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0004970"
+        ],
+        "hpoName": "dilatation de l'aorte ascendante",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 239,
+    "length": 7,
+    "sentence": "déjà vu",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0012005"
+        ],
+        "hpoName": "déjà vu",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 338,
+    "length": 19,
+    "sentence": "dilatation aortique",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0004942"
+        ],
+        "hpoName": "dilatation aortique",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 675,
+    "length": 18,
+    "sentence": "syndrome de marfan",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001182"
+        ],
+        "hpoName": "syndrome de marfan",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1187,
+    "length": 12,
+    "sentence": "pneumothorax",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0002107"
+        ],
+        "hpoName": "pneumothorax",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1246,
+    "length": 6,
+    "sentence": "myopie",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000545"
+        ],
+        "hpoName": "myopie",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1350,
+    "length": 18,
+    "sentence": "syndrome de marfan",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001182"
+        ],
+        "hpoName": "syndrome de marfan",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1398,
+    "length": 19,
+    "sentence": "anomalie du sternum",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000766"
+        ],
+        "hpoName": "anomalie du sternum",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1425,
+    "length": 15,
+    "sentence": "arachnodactylie",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001166"
+        ],
+        "hpoName": "arachnodactylie",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1758,
+    "length": 32,
+    "sentence": "dilatation de l'aorte ascendante",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0004970"
+        ],
+        "hpoName": "dilatation de l'aorte ascendante",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1967,
+    "length": 19,
+    "sentence": "dilatation aortique",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0004942"
+        ],
+        "hpoName": "dilatation aortique",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 2228,
+    "length": 19,
+    "sentence": "dilatation aortique",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0004942"
+        ],
+        "hpoName": "dilatation aortique",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  }
+]

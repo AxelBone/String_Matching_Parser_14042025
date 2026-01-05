@@ -1,0 +1,8 @@
+time curl -sS -X POST "http://lx181:9502/v1/completions" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "qwen3-32b",
+    "prompt": "Hello, how are you today?",
+    "max_tokens": 200,
+    "temperature": 0.7
+  }'

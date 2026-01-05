@@ -1,0 +1,135 @@
+[
+  {
+    "start": 251,
+    "length": 17,
+    "sentence": "retard de langage",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000750"
+        ],
+        "hpoName": "retard de langage",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 765,
+    "length": 22,
+    "sentence": "insuffisance cardiaque",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0001635"
+        ],
+        "hpoName": "insuffisance cardiaque",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1332,
+    "length": 16,
+    "sentence": "hypotonie axiale",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0008936"
+        ],
+        "hpoName": "hypotonie axiale",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1453,
+    "length": 13,
+    "sentence": "petite bouche",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000160"
+        ],
+        "hpoName": "petite bouche",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1468,
+    "length": 23,
+    "sentence": "pli palmaire transverse",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000954"
+        ],
+        "hpoName": "pli palmaire transverse",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1553,
+    "length": 17,
+    "sentence": "souffle cardiaque",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0030148"
+        ],
+        "hpoName": "souffle cardiaque",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  },
+  {
+    "start": 1594,
+    "length": 16,
+    "sentence": "anomalie cutanée",
+    "negated": false,
+    "concerned_person": "Patient",
+    "mult_CS": false,
+    "hpoAnnotation": [
+      {
+        "hpoId": [
+          "HP:0000951"
+        ],
+        "hpoName": "anomalie cutanée",
+        "parser": "SM",
+        "rating": 3,
+        "ratingInit": 3
+      }
+    ]
+  }
+]
