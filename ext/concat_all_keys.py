@@ -7,55 +7,37 @@ def main():
     parser = argparse.ArgumentParser(
         description="Concatène les fichiers JSON pour toutes les clés"
     )
+    parser.add_argument("--input-dir", required=True, type=Path)
+    parser.add_argument("--mapping", default="mapping.json", type=Path)
+    parser.add_argument("--output-dir", default="output_files", type=Path)
+
+    # 👉 préfixe appliqué aux *fichiers listés dans le mapping* (pas aux clés)
     parser.add_argument(
-        "--input-dir",
-        required=True,
-        type=Path,
-        help="Dossier contenant les fichiers JSON source"
-    )
-    parser.add_argument(
-        "--mapping",
-        default="mapping.json",
-        type=Path,
-        help="Fichier mapping clé -> fichiers (par défaut: mapping.json)"
-    )
-    parser.add_argument(
-        "--output-dir",
-        default="output_files",
-        type=Path,
-        help="Dossier de sortie (par défaut: output_files)"
-    )
-    parser.add_argument(
-        "--prefix",
+        "--file-prefix",
         default="",
-        help="Préfixe à ajouter devant chaque nom de fichier du mapping (ex: 'ann_'). Par défaut: vide."
+        help="Préfixe à ajouter aux fichiers du mapping (ex: 'ann_')"
     )
 
     args = parser.parse_args()
 
-    # Vérifications
     if not args.mapping.exists():
         sys.exit(f"❌ Mapping introuvable : {args.mapping}")
-
     if not args.input_dir.exists():
         sys.exit(f"❌ Dossier d'entrée introuvable : {args.input_dir}")
 
-    # Chargement mapping
     with open(args.mapping, "r", encoding="utf-8") as f:
         mapping = json.load(f)
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Traitement de toutes les clés
     for key, file_list in mapping.items():
         concatenated = []
 
         for filename in file_list:
-            # Applique le préfixe seulement si nécessaire
-            # (évite ann_ann_... si le mapping contient déjà ann_)
+            # Si le mapping n'a pas ann_, on l'ajoute ; sinon on laisse tel quel
             effective_name = filename
-            if args.prefix and not filename.startswith(args.prefix):
-                effective_name = args.prefix + filename
+            if args.file_prefix and not filename.startswith(args.file_prefix):
+                effective_name = args.file_prefix + filename
 
             file_path = args.input_dir / effective_name
 
@@ -72,14 +54,13 @@ def main():
 
             concatenated.extend(data)
 
-        # Écriture du fichier de la clé
         output_file = args.output_dir / f"{key}.json"
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(concatenated, f, indent=2, ensure_ascii=False)
 
         print(f"✅ {key} → {output_file} ({len(concatenated)} entrées)")
 
-    print("🎉 Traitement terminé pour toutes les clés")
+    print("🎉 Terminé")
 
 
 if __name__ == "__main__":
