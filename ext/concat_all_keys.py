@@ -36,15 +36,14 @@ def main():
 
     for key, file_list in mapping.items():
         concatenated = []
+        found_any_file = False
 
         for filename in file_list:
-            effective_name = filename
+            effective_name = filename.strip()
 
-            # Ajout du préfixe si nécessaire
             if args.file_prefix and not effective_name.startswith(args.file_prefix):
                 effective_name = args.file_prefix + effective_name
 
-            # Ajout du suffixe si nécessaire
             if args.file_suffix and not effective_name.endswith(args.file_suffix):
                 effective_name = effective_name + args.file_suffix
 
@@ -53,6 +52,8 @@ def main():
             if not file_path.exists():
                 print(f"⚠️ [{key}] Fichier manquant : {file_path}")
                 continue
+
+            found_any_file = True
 
             with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
@@ -63,6 +64,12 @@ def main():
 
             concatenated.extend(data)
 
+        # 🚫 Aucun fichier trouvé ou aucune donnée
+        if not found_any_file or not concatenated:
+            print(f"⚠️ [{key}] Aucun fichier valide détecté → fichier non créé")
+            continue
+
+        # ✅ Écriture uniquement si contenu
         output_file = args.output_dir / f"{key}.json"
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(concatenated, f, indent=2, ensure_ascii=False)
