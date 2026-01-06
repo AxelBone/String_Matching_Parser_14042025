@@ -1,4 +1,5 @@
 import os
+import json
 import subprocess
 
 INPUT_DIR = "input"
@@ -12,20 +13,36 @@ for filename in os.listdir(INPUT_DIR):
     if not os.path.isfile(file_path):
         continue
 
-    # lire les termes du fichier
-    with open(file_path, "r") as f:
-        terms = [line.strip() for line in f if line.strip()]
+    # 1) Charger le JSON
+    with open(file_path, "r", encoding="utf-8") as f:
+        data = json.load(f)  # data doit être une liste de dicts
 
-    if not terms:
-        print(f"Skipping {filename} (no terms)")
+    # 2) Extraire les HP:xxxx (en ignorant les negated=true)
+    hpo_terms = []
+    for item in data:
+        if item.get("negated") is True:
+            continue
+
+        for ann in item.get("hpoAnnotation", []):
+            for hpo_id in ann.get("hpoId", []):
+                if isinstance(hpo_id, str) and hpo_id.startswith("HP:"):
+                    hpo_terms.append(hpo_id)
+
+    # dédoublonner en gardant l'ordre
+    seen = set()
+    hpo_terms = [x for x in hpo_terms if not (x in seen or seen.add(x))]
+
+    if not hpo_terms:
+        print(f"Skipping {filename} (no HPO terms found)")
         continue
 
-    hpo_list = ",".join(terms)
-    output_file = os.path.join(
-        OUTPUT_DIR,
-        filename.rsplit(".", 1)[0] + "_match.tsv"
-    )
+    hpo_list = ",".join(hpo_terms)
 
+    # 3) Nom du fichier de sortie
+    stem = filename.rsplit(".", 1)[0]
+    output_file = os.path.join(OUTPUT_DIR, stem + "_match.tsv")
+
+    # 4) Lancer phenogenius_cli.py
     cmd = [
         "python",
         "phenogenius_cli.py",
@@ -33,7 +50,7 @@ for filename in os.listdir(INPUT_DIR):
         "--hpo_list", hpo_list
     ]
 
-    print(f"Running on {filename}")
+    print(f"Running on {filename} ({len(hpo_terms)} HPO)")
     subprocess.run(cmd, check=True)
 
 print("Done.")

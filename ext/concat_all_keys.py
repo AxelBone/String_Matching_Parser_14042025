@@ -25,6 +25,11 @@ def main():
         type=Path,
         help="Dossier de sortie (par défaut: output_files)"
     )
+    parser.add_argument(
+        "--prefix",
+        default="",
+        help="Préfixe à ajouter devant chaque nom de fichier du mapping (ex: 'ann_'). Par défaut: vide."
+    )
 
     args = parser.parse_args()
 
@@ -46,7 +51,13 @@ def main():
         concatenated = []
 
         for filename in file_list:
-            file_path = args.input_dir / filename
+            # Applique le préfixe seulement si nécessaire
+            # (évite ann_ann_... si le mapping contient déjà ann_)
+            effective_name = filename
+            if args.prefix and not filename.startswith(args.prefix):
+                effective_name = args.prefix + filename
+
+            file_path = args.input_dir / effective_name
 
             if not file_path.exists():
                 print(f"⚠️ [{key}] Fichier manquant : {file_path}")
@@ -56,7 +67,7 @@ def main():
                 data = json.load(f)
 
             if not isinstance(data, list):
-                print(f"❌ [{key}] {filename} n'est pas une liste JSON — ignoré")
+                print(f"❌ [{key}] {effective_name} n'est pas une liste JSON — ignoré")
                 continue
 
             concatenated.extend(data)
