@@ -1,31 +1,49 @@
-import os
-import json 
+from pathlib import Path
+import json
 
+terms_file = Path("ext/HPO_terms_diff/diff_between_hpo_03032025_and_14042022.txt")
+folder = Path("0_data/new_reports")
 
-# Lister les fichiers dans le dossier
-# pour chaque fichier, le lire, et vérifier que le terme n'est pas présent dans l'ensemble
-
+# Charge la liste de termes récents
 recent_hpoterms = set()
-with open("ext/HPO_terms_diff/diff_between_hpo_03032025_and_14042022.txt") as fh:
-    for line in fh.readlines():
-        recent_hpoterms.add(line.strip())
+with terms_file.open("r", encoding="utf-8") as fh:
+    for line in fh:
+        term = line.strip()
+        if term:
+            recent_hpoterms.add(term)
 
-folder_path = "0_data/new_reports/"
+detected_terms = set()
+files_scanned = 0
+files_failed = 0
 
-detected_terms_in_recent_version = set()
+for path_file in folder.glob("*.json"):
+    files_scanned += 1
+    try:
+        with path_file.open("r", encoding="utf-8") as fh:
+            annotated = json.load(fh)
+    except Exception as e:
+        files_failed += 1
+        print(f"⚠️ [{path_file.name}] Lecture/JSON impossible: {e}")
+        continue
 
-for file in os.listdir(folder_path):
-    path_file = folder_path + file
-    with open(path_file, "r") as fh:
-        annotated = json.load(fh)
+    if not isinstance(annotated, list):
+        print(f"⚠️ [{path_file.name}] Format inattendu: JSON racine n'est pas une liste")
+        continue
 
     for annot in annotated:
-        clinical_term = annot["hpoAnnotation"][0]["hpoId"][0]
+        # On sécurise la structure attendue
+        hpo_annotations = (annot or {}).get("hpoAnnotation") or []
+        for ha in hpo_annotations:
+            hpo_ids = (ha or {}).get("hpoId") or []
+            for hpo_id in hpo_ids:
+                if hpo_id in recent_hpoterms:
+                    if hpo_id not in detected_terms:
+                        print(f"Warning: Term {hpo_id} detected in {path_file.name}")
+                    detected_terms.add(hpo_id)
 
-        if clinical_term in recent_hpoterms:
-            detected_terms_in_recent_version.add(clinical_term)
-            print(f"Warming: Term {clinical_term} has been detected.")
-
-
-    break
-    
+print("\n=== Résumé ===")
+print(f"Fichiers scannés : {files_scanned}")
+print(f"Fichiers en erreur: {files_failed}")
+print(f"Termes récents détectés: {len(detected_terms)}")
+if detected_terms:
+    print("Liste:", ", ".join(sorted(detected_terms)))
