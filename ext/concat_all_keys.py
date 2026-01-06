@@ -11,11 +11,15 @@ def main():
     parser.add_argument("--mapping", default="mapping.json", type=Path)
     parser.add_argument("--output-dir", default="output_files", type=Path)
 
-    # 👉 préfixe appliqué aux *fichiers listés dans le mapping* (pas aux clés)
     parser.add_argument(
         "--file-prefix",
         default="",
         help="Préfixe à ajouter aux fichiers du mapping (ex: 'ann_')"
+    )
+    parser.add_argument(
+        "--file-suffix",
+        default=".json",
+        help="Suffixe/extension des fichiers (ex: '.json')"
     )
 
     args = parser.parse_args()
@@ -34,10 +38,15 @@ def main():
         concatenated = []
 
         for filename in file_list:
-            # Si le mapping n'a pas ann_, on l'ajoute ; sinon on laisse tel quel
             effective_name = filename
-            if args.file_prefix and not filename.startswith(args.file_prefix):
-                effective_name = args.file_prefix + filename
+
+            # Ajout du préfixe si nécessaire
+            if args.file_prefix and not effective_name.startswith(args.file_prefix):
+                effective_name = args.file_prefix + effective_name
+
+            # Ajout du suffixe si nécessaire
+            if args.file_suffix and not effective_name.endswith(args.file_suffix):
+                effective_name = effective_name + args.file_suffix
 
             file_path = args.input_dir / effective_name
 
