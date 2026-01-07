@@ -1,0 +1,40 @@
+analysis:
+  id_col: "ID_PAT_ETUDE"
+  gene_col: "gene_symbol"
+  keep_only_monogenic: true
+  output_path: "analysis_table.csv"
+  output_format: "csv"
+
+runs:
+  - run_id: "phenogenius_hpo2022_sm"
+    prio_tool: "phenogenius"
+    hpo_version: "2022"
+    extraction_method: "string_matching"
+    relpath_pattern: "{patient_id}.tsv"
+    file:
+      sep: "\t"
+      header: true
+    schema:
+      gene_symbol_col: "gene_symbol"
+      rank_col: "rank"
+      score_col: "score"
+      extra_cols:
+        hpo_implicated: "hpo_implicated"
+        hpo_description_implicated: "hpo_description_implicated"
+        phenotype_specificity: "phenotype_specificity"
+
+  # - run_id: "phen2gene_hpo2022_sm"
+  #   prio_tool: "phen2gene"
+  #   hpo_version: "2022"
+  #   extraction_method: "string_matching"
+  #   relpath_pattern: "phen2gene/hpo2022/sm/{patient_id}.tsv"
+  #   file:
+  #     sep: "\t"
+  #     header: true
+  #   schema:
+  #     gene_symbol_col: "Gene"
+  #     rank_col: "Rank"
+  #     score_col: "Score"
+  #     extra_cols:
+  #       status: "Status"
+  #       gene_id: "ID"

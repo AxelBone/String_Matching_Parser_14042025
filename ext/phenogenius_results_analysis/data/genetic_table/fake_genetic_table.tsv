@@ -1,0 +1,6 @@
+ID_PAT_ETUDE	IPP	IPP_clef	key_for_chaining	transcript_from_ehop	transcript	transcript_no_version	chr	pos	ref	alt	var_id	transcript_nm	gene_symbol	gene_hgnc_id	acmg_classification	acmg_criteria	clinvar_classification	clinvar_review_status
+report159	IPP000159	A1B2	report159	NM_000138.5	NM_000138.5	NM_000138	1	1234567	G	A	var159	NM_000138	FLNA	HGNC:3754	Pathogenic	PVS1,PM2	Pathogenic	reviewed_by_expert_panel
+report27	IPP000027	C3D4	report27	NM_001127500.3	NM_001127500.3	NM_001127500	X	7654321	C	T	var27	NM_001127500	MECP2	HGNC:6990	Likely_pathogenic	PS2,PM2	Likely_pathogenic	criteria_provided_single_submitter
+report32	IPP000032	E5F6	report32	NM_001042351.2	NM_001042351.2	NM_001042351	15	9876543	T	G	var32	NM_001042351	UBE3A	HGNC:12496	Pathogenic	PVS1,PS3	Pathogenic	reviewed_by_expert_panel
+report34	IPP000034	G7H8	report34	NM_020975.6	NM_020975.6	NM_020975	7	2468101	A	C	var34	NM_020975	KMT2D	HGNC:7133	Likely_pathogenic	PS4,PM1	Likely_pathogenic	criteria_provided_multiple_submitters_no_conflicts
+report54	IPP000054	I9J0	report54	NM_000088.3	NM_000088.3	NM_000088	17	1357911	G	T	var54	NM_000088	COL1A1	HGNC:2197	Pathogenic	PVS1,PM5	Pathogenic	reviewed_by_expert_panel
