@@ -3,13 +3,14 @@ import json
 import subprocess
 import time
 import logging
+import shutil
 from logging.handlers import RotatingFileHandler
 
 # === CONFIGURATION ===
-INPUT_DIR = "input_hpo_test"          # JSON d'annotation HPO (un fichier par patient)
-OUTPUT_DIR = "output_p2g"    # dossier de sortie pour Phen2Gene
-# HPO_2025_FILE = "HPO_terms_2025.txt"
-SELECTED_KEYS_FILE = "selected_keys.txt"  # fichier contenant une clé par ligne
+INPUT_DIR = "input"          # JSON d'annotation HPO (un fichier par patient)
+OUTPUT_DIR = "output_genes_predicted"  # dossier final pour les *_match.tsv
+HPO_2025_FILE = "HPO_terms_2025.txt"
+SELECTED_KEYS_FILE = "selected_keys.txt"  # fichier contenant une clé par ligne, sans extension
 
 PHEN2GENE_SCRIPT = "../Phen2Gene/phen2gene.py"  # chemin vers phen2gene.py
 WEIGHT_METHOD = "sk"  # ex: "sk", "equal", etc.
@@ -42,7 +43,7 @@ fh.setLevel(logging.INFO)
 fh.setFormatter(fmt)
 logger.addHandler(fh)
 
-# === Charger la liste HPO_terms_2025 (même logique que pour phenogenius) ===
+# === Charger la liste HPO_terms_2025 (CSV simple avec des HP:xxxx séparés par des virgules) ===
 with open(HPO_2025_FILE, "r", encoding="utf-8") as f:
     hpo_2025_terms = {
         term.strip()
@@ -52,12 +53,13 @@ with open(HPO_2025_FILE, "r", encoding="utf-8") as f:
 logger.info(f"Loaded {len(hpo_2025_terms)} HPO terms from {HPO_2025_FILE}")
 
 # === Charger la liste des fichiers à analyser via les clés ===
+selected_filenames = []
 with open(SELECTED_KEYS_FILE, "r", encoding="utf-8") as f:
-    selected_filenames = []
     for line in f:
         key = line.strip()
         if not key:
             continue
+        # on assume que les fichiers s'appellent <key>.json
         selected_filenames.append(key + ".json")
 
 logger.info(f"Loaded {len(selected_filenames)} keys from {SELECTED_KEYS_FILE}")
@@ -78,19 +80,23 @@ for i, filename in enumerate(selected_filenames, start=1):
         continue
 
     t0_sample = time.perf_counter()
-    stem = filename.rsplit(".", 1)[0]
+    stem = filename.rsplit(".", 1)[0]  # ex: "mygene2_67"
 
-    # fichier de sortie phen2gene
-    output_file = os.path.join(OUTPUT_DIR, stem + "_phen2gene.tsv")
-    # fichier temporaire contenant la liste d'HPO pour phen2gene
+    # Fichier HPO d'entrée pour Phen2Gene
     hpo_input_file = os.path.join(OUTPUT_DIR, stem + "_hpo.txt")
+    # Dossier temporaire où Phen2Gene va écrire son output_file.associated_gene_list
+    tmp_output_dir = os.path.join(OUTPUT_DIR, stem + "_p2g_output")
+    # Fichier final que tu veux obtenir
+    final_output_file = os.path.join(OUTPUT_DIR, stem + "_match.tsv")
 
     try:
-        # 1) Charger le JSON
+        # 1) Charger le JSON d'annotations
         with open(file_path, "r", encoding="utf-8") as f:
-            data = json.load(f)  # data = liste de dicts (annotations)
+            data = json.load(f)  # data = liste de dicts
 
-        # 2) Extraire les HP:xxxx (en ignorant negated=true et HPO_terms_2025)
+        # 2) Extraire les HPO IDs, en excluant :
+        #    - negated == True
+        #    - HPO présents dans HPO_terms_2025 (référence)
         hpo_terms = []
         for item in data:
             if item.get("negated") is True:
@@ -118,18 +124,22 @@ for i, filename in enumerate(selected_filenames, start=1):
             )
             continue
 
-        # 3) Écrire la liste d'HPO dans un fichier texte (un ID par ligne)
+        # 3) Écrire la liste d'HPO pour Phen2Gene (un ID par ligne)
         with open(hpo_input_file, "w", encoding="utf-8") as hf:
             for hpo in hpo_terms:
                 hf.write(hpo + "\n")
 
-        # 4) Lancer phen2gene.py
+        # 4) Lancer Phen2Gene
+        # Phen2Gene ignore le nom exact donné à -out mais crée un répertoire <out>/
+        # contenant 'output_file.associated_gene_list'.
+        os.makedirs(tmp_output_dir, exist_ok=True)
+
         cmd = [
             "python",
             PHEN2GENE_SCRIPT,
             "-f", hpo_input_file,
             "-w", WEIGHT_METHOD,
-            "-out", output_file,
+            "-out", tmp_output_dir,
         ]
 
         logger.info(
@@ -150,18 +160,53 @@ for i, filename in enumerate(selected_filenames, start=1):
                 logger.error(f"[{filename}] STDOUT:\n{result.stdout.strip()}")
             if result.stderr:
                 logger.error(f"[{filename}] STDERR:\n{result.stderr.strip()}")
+            # On ne supprime pas tmp_output_dir/hpo_input_file pour debug
             continue
+
+        # 5) Récupérer output_file.associated_gene_list et le renommer en <stem>_match.tsv
+        src_file = os.path.join(tmp_output_dir, "output_file.associated_gene_list")
+
+        if not os.path.isfile(src_file):
+            failed += 1
+            logger.error(
+                f"[{i}/{len(selected_filenames)}] FAILED {filename} | "
+                f"Phen2Gene output file not found: {src_file} | {dt:.3f}s"
+            )
+            if result.stdout:
+                logger.error(f"[{filename}] STDOUT:\n{result.stdout.strip()}")
+            if result.stderr:
+                logger.error(f"[{filename}] STDERR:\n{result.stderr.strip()}")
+            continue
+
+        # Si un fichier final existe déjà, on peut choisir de l'écraser ou pas
+        if os.path.exists(final_output_file):
+            logger.warning(f"Overwriting existing file: {final_output_file}")
+            os.remove(final_output_file)
+
+        shutil.move(src_file, final_output_file)
 
         processed += 1
         logger.info(
             f"[{i}/{len(selected_filenames)}] Done {filename} | "
-            f"hpo_input={hpo_input_file} | output={output_file} | {dt:.3f}s"
+            f"final_output={final_output_file} | {dt:.3f}s"
         )
 
+        # log optionnel des sorties
         if result.stdout:
             logger.info(f"[{filename}] STDOUT:\n{result.stdout.strip()}")
         if result.stderr:
             logger.warning(f"[{filename}] STDERR:\n{result.stderr.strip()}")
+
+        # 6) Nettoyage des fichiers temporaires
+        try:
+            if os.path.exists(hpo_input_file):
+                os.remove(hpo_input_file)
+            if os.path.isdir(tmp_output_dir):
+                shutil.rmtree(tmp_output_dir)
+        except Exception as cleanup_err:
+            logger.warning(
+                f"[{i}/{len(selected_filenames)}] Cleanup warning for {filename}: {cleanup_err}"
+            )
 
     except Exception as e:
         dt = time.perf_counter() - t0_sample
