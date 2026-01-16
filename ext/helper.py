@@ -662,3 +662,95 @@ plt.title("Évolution cumulative du phénotype")
 plt.grid(alpha=0.3)
 plt.tight_layout()
 plt.show()
+
+
+
+####### 
+df_doc["avg_sentence_len_words"] = df_doc["CLEAN_FR_SPLIT"].apply(avg_sentence_length)
+
+df_doc["hpo_per_sentence"] = df_doc.apply(
+    lambda r: r["n_hpo"] / r["n_sentences"] if r["n_sentences"] > 0 else 0,
+    axis=1
+)
+
+df_doc["hpo_per_1k_words"] = df_doc.apply(
+    lambda r: r["n_hpo"] / r["n_words"] * 1000 if r["n_words"] > 0 else 0,
+    axis=1
+)
+
+
+
+
+patient_agg = (
+    df_doc.groupby("PATIENT_ID")
+          .agg({
+              "DOCUMENT_ID": "nunique",
+              "CREATED_AT": ["min", "max"],
+              "n_words": "sum",
+              "n_sentences": "sum",
+              "n_hpo": "sum",
+              "n_variants": "first",
+          })
+)
+
+patient_agg.columns = [
+    "n_docs", "t_start", "t_end",
+    "n_words_total", "n_sent_total",
+    "n_hpo_total", "n_variants"
+]
+
+patient_agg["span_days"] = (patient_agg["t_end"] - patient_agg["t_start"]).dt.days
+
+
+
+###### 
+def flatten_hpo(list_of_lists):
+    all_hpo = []
+    for x in list_of_lists:
+        if isinstance(x, list):
+            all_hpo.extend(x)
+    return sorted(set(all_hpo))
+
+hpo_sets = df_doc.groupby("PATIENT_ID")["HPO code"].apply(flatten_hpo)
+
+patient_agg["HPO_unique_list"] = hpo_sets
+patient_agg["n_hpo_unique"] = patient_agg["HPO_unique_list"].apply(len)
+
+
+
+#### 
+def flatten_hpo(list_of_lists):
+    all_hpo = []
+    for x in list_of_lists:
+        if isinstance(x, list):
+            all_hpo.extend(x)
+    return sorted(set(all_hpo))
+
+hpo_sets = df_doc.groupby("PATIENT_ID")["HPO code"].apply(flatten_hpo)
+
+patient_agg["HPO_unique_list"] = hpo_sets
+patient_agg["n_hpo_unique"] = patient_agg["HPO_unique_list"].apply(len)
+
+
+##### 
+patient_agg["hpo_total_per_doc"] = patient_agg["n_hpo_total"] / patient_agg["n_docs"]
+patient_agg["hpo_unique_per_doc"] = patient_agg["n_hpo_unique"] / patient_agg["n_docs"]
+
+patient_agg["hpo_per_sentence"] = patient_agg["n_hpo_total"] / patient_agg["n_sent_total"].replace(0, np.nan)
+patient_agg["hpo_per_1k_words"] = patient_agg["n_hpo_total"] / patient_agg["n_words_total"].replace(0, np.nan) * 1000
+
+
+
+##### 
+def variant_status(n):
+    n = 0 if pd.isna(n) else int(n)
+    if n == 0:
+        return "none"
+    elif n == 1:
+        return "mono"
+    else:
+        return "poly"
+
+patient_agg["variant_status"] = patient_agg["n_variants"].apply(variant_status)
+
+df_patient = patient_agg.reset_index()
