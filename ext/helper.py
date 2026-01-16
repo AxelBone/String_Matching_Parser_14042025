@@ -123,3 +123,38 @@ plt.xlabel("Nombre de mots")
 plt.ylabel("Nombre de HPO")
 plt.tight_layout()
 plt.show()
+
+#### Régression + scatter
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+X = df_doc['n_words'].values.reshape(-1, 1)
+y = df_doc['n_hpo'].values
+
+model = LinearRegression().fit(X, y)
+
+slope = model.coef_[0]
+intercept = model.intercept_
+r2 = model.score(X, y)
+
+plt.figure(figsize=(7, 5))
+sns.scatterplot(x=df_doc['n_words'], y=df_doc['n_hpo'], alpha=0.3)
+plt.plot(df_doc['n_words'], model.predict(X), color='red')
+
+plt.text(
+    0.05, 0.95,
+    f'y = {slope:.3f} x + {intercept:.2f}\nR² = {r2:.3f}',
+    transform=plt.gca().transAxes,
+    va='top'
+)
+
+plt.title("n_words vs n_hpo (régression linéaire)")
+plt.xlabel("Nombre de mots")
+plt.ylabel("Nombre de HPO")
+plt.tight_layout()
+plt.show()
+
+
+from scipy.stats import spearmanr
+rho, p = spearmanr(df_doc['n_words'], df_doc['n_hpo'])
+print(f"Spearman ρ = {rho:.3f}, p = {p:.3e}")
