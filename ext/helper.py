@@ -158,3 +158,107 @@ plt.show()
 from scipy.stats import spearmanr
 rho, p = spearmanr(df_doc['n_words'], df_doc['n_hpo'])
 print(f"Spearman ρ = {rho:.3f}, p = {p:.3e}")
+
+
+######
+
+
+plt.figure(figsize=(7, 5))
+
+sns.kdeplot(
+    data=df_kde,
+    x='n_sentences',
+    y='n_hpo',
+    levels=10,        # nombre de courbes
+    thresh=0.01,      # seuil minimal de densité
+    fill=False,       # uniquement les lignes, pas de remplissage
+    color='#08519c',  # bleu foncé pour rester cohérent
+    linewidths=1.2
+)
+
+plt.title("Densité 2D n_sentences vs n_hpo")
+plt.xlabel("Nombre de phrases")
+plt.ylabel("Nombre de HPO")
+plt.tight_layout()
+plt.show()
+
+
+
+#### Variante avec fond
+
+plt.figure(figsize=(7, 5))
+
+sns.kdeplot(
+    data=df_kde,
+    x='n_sentences',
+    y='n_hpo',
+    fill=True,        # remplissage
+    cmap='Blues',     # dégradé bleu
+    thresh=0.01,
+    levels=30
+)
+
+plt.title("Densité 2D n_sentences vs n_hpo (fond)")
+plt.xlabel("Nombre de phrases")
+plt.ylabel("Nombre de HPO")
+plt.tight_layout()
+plt.show()
+
+
+### Combianison manuelle
+plt.figure(figsize=(7, 5))
+
+# 1) Fond de densité
+sns.kdeplot(
+    data=df_kde,
+    x='n_sentences',
+    y='n_hpo',
+    fill=True,
+    cmap='Blues',
+    thresh=0.01,
+    levels=30
+)
+
+# 2) Scatter par-dessus
+sns.scatterplot(
+    data=df_doc,
+    x='n_sentences',
+    y='n_hpo',
+    alpha=0.2,
+    color='black',
+    s=10
+)
+
+# 3) Régression linéaire (si tu veux sur n_sentences vs n_hpo)
+sns.regplot(
+    data=df_doc,
+    x='n_sentences',
+    y='n_hpo',
+    scatter=False,
+    color='red'
+)
+
+plt.title("n_sentences vs n_hpo : densité + scatter + régression")
+plt.xlabel("Nombre de phrases")
+plt.ylabel("Nombre de HPO")
+plt.tight_layout()
+plt.show()
+
+
+plt.figure(figsize=(7, 5))
+
+sns.kdeplot(
+    data=df_kde,
+    x='n_sentences',
+    y='n_hpo',
+    levels=10,
+    thresh=0.01,
+    fill=False,
+    color='#08519c',
+    linewidths=1.2
+)
+
+plt.axis('off')  # si tu veux juste la courbe, sans axes
+plt.tight_layout()
+plt.savefig("density_nsent_nhpo.png", dpi=300, transparent=True)
+plt.close()
