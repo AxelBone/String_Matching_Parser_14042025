@@ -508,3 +508,47 @@ plot_time_trend(
     ylabel="Phrases moyennes par document (mensuel)",
     smooth_window=12
 )
+
+####### 
+import pandas as pd
+
+df_doc['CREATED_AT'] = pd.to_datetime(df_doc['CREATED_AT'])
+
+# Exploser le dataset pour avoir une ligne par (date, HPO)
+df_exp = df_doc[['CREATED_AT', 'HPO code']].explode('HPO code').dropna()
+
+# 1) Total HPO par jour
+hpo_total = df_exp.groupby(df_exp['CREATED_AT'].dt.date)['HPO code'].count()
+hpo_total.index = pd.to_datetime(hpo_total.index)
+
+# 2) Nouveaux HPO par jour
+seen = set()
+records = []
+
+for d, subset in df_exp.groupby(df_exp['CREATED_AT'].dt.date)['HPO code']:
+    subset = set(subset.dropna())
+    new = subset - seen
+    records.append((d, len(new)))
+    seen |= subset
+
+hpo_new = pd.Series({pd.to_datetime(d): n for d, n in records})
+
+
+import matplotlib.pyplot as plt
+
+fig, ax1 = plt.subplots(figsize=(12,5))
+
+# Total HPO
+ax1.plot(hpo_total.index, hpo_total.values, color='blue', alpha=0.6, label='Total HPO/jour')
+ax1.set_ylabel("Total HPO", color='blue')
+ax1.tick_params(axis='y', labelcolor='blue')
+
+# Nouveaux HPO (2e axe)
+ax2 = ax1.twinx()
+ax2.plot(hpo_new.index, hpo_new.values, color='red', linewidth=2, label='Nouveaux HPO/jour')
+ax2.set_ylabel("Nouveaux HPO", color='red')
+ax2.tick_params(axis='y', labelcolor='red')
+
+fig.suptitle("Flux phénotypique clinique : total vs nouveaux HPO par jour", fontsize=16)
+plt.tight_layout()
+plt.show()
