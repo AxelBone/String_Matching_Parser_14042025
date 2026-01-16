@@ -2,49 +2,44 @@ import pandas as pd
 import stanza
 
 # -------------------------------------------------------------------
-# 1) Paramètres à adapter
+# Paramètres
 # -------------------------------------------------------------------
-INPUT_CSV = "input.csv"      # chemin de ton csv d'entrée
-OUTPUT_CSV = "output.csv"    # chemin de sauvegarde du csv de sortie
-TEXT_COL = "CLEAN_FR_TEXT"   # nom de la colonne texte d'entrée
-NEW_COL = "CLEAN_FR_SPLIT"   # nom de la nouvelle colonne de phrases
-SENT_SEP = " ||| "           # séparateur entre phrases dans la nouvelle colonne
+INPUT_CSV = "input.csv"
+OUTPUT_CSV = "output.csv"
+TEXT_COL = "CLEAN_FR_TEXT"
+NEW_COL = "CLEAN_FR_SPLIT"
+
+# Tous les combien de textes on affiche la progression
+PRINT_EVERY = 100
 # -------------------------------------------------------------------
 
 
 def init_pipeline():
     """
     Initialise le pipeline Stanza pour le français.
-    Lance stanza.download('fr') une seule fois avant la première utilisation.
+    Lancer une fois séparément: stanza.download('fr')
     """
-    # À faire une seule fois sur ta machine (sinon commente cette ligne) :
+    # Une seule fois sur ta machine (puis commenter) :
     # stanza.download('fr')
+
     nlp = stanza.Pipeline(
         lang="fr",
         processors="tokenize",
-        use_gpu=False  # passe à True si tu as une GPU correctement configurée
+        use_gpu=False
     )
     return nlp
 
 
-def split_sentences_factory(nlp):
+def split_sentences(nlp, text):
     """
-    Ferme le pipeline dans une closure pour éviter de le recréer à chaque appel.
-    Retourne une fonction split_sentences(text).
+    Applique Stanza à un texte et renvoie une LISTE de phrases.
     """
-    def split_sentences(text):
-        # Gérer les NaN ou valeurs vides
-        if not isinstance(text, str) or not text.strip():
-            return text
+    if not isinstance(text, str) or not text.strip():
+        return []
 
-        doc = nlp(text)
-        # On reconstruit chaque phrase à partir des tokens
-        sentences = [" ".join([w.text for w in sent.words]) for sent in doc.sentences]
-
-        # On renvoie un seul string avec les phrases séparées par SENT_SEP
-        return SENT_SEP.join(sentences)
-
-    return split_sentences
+    doc = nlp(text)
+    sentences = [" ".join(w.text for w in sent.words) for sent in doc.sentences]
+    return sentences
 
 
 def main():
@@ -54,16 +49,32 @@ def main():
     if TEXT_COL not in df.columns:
         raise ValueError(f"La colonne '{TEXT_COL}' n'existe pas dans le fichier CSV.")
 
-    # 2) Initialiser Stanza
+    # 2) Récupérer la colonne en vecteur (liste Python)
+    texts = df[TEXT_COL].tolist()
+    total = len(texts)
+
+    print(f"Nombre total de documents à traiter : {total}")
+
+    # 3) Initialiser Stanza une seule fois
     nlp = init_pipeline()
-    split_sentences = split_sentences_factory(nlp)
 
-    # 3) Appliquer Stanza à chaque document de CLEAN_FR_TEXT
-    df[NEW_COL] = df[TEXT_COL].apply(split_sentences)
+    # 4) Boucle texte par texte
+    results = []
+    for i, text in enumerate(texts, start=1):
+        sentences = split_sentences(nlp, text)
+        results.append(sentences)
 
-    # 4) Sauvegarder le DataFrame
+        # Affichage de la progression
+        if i % PRINT_EVERY == 0 or i == total:
+            restant = total - i
+            print(f"Traités : {i}/{total} (restant : {restant})")
+
+    # 5) Repose le vecteur dans le DataFrame
+    df[NEW_COL] = results
+
+    # 6) Sauvegarde
     df.to_csv(OUTPUT_CSV, index=False, encoding="utf-8")
-    print(f"Fichier sauvegardé dans : {OUTPUT_CSV}")
+    print(f"Fichier sauvegardé dans {OUTPUT_CSV}")
 
 
 if __name__ == "__main__":
