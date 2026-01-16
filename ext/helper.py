@@ -552,3 +552,113 @@ ax2.tick_params(axis='y', labelcolor='red')
 fig.suptitle("Flux phénotypique clinique : total vs nouveaux HPO par jour", fontsize=16)
 plt.tight_layout()
 plt.show()
+
+
+##### 
+import pandas as pd
+
+df_doc['CREATED_AT'] = pd.to_datetime(df_doc['CREATED_AT'])
+
+# explode pour avoir un HPO par ligne
+df_exp = df_doc[['CREATED_AT', 'HPO code']].explode('HPO code').dropna()
+
+# total HPO par jour
+hpo_total = df_exp.groupby(df_exp['CREATED_AT'].dt.date)['HPO code'].count()
+hpo_total.index = pd.to_datetime(hpo_total.index)
+
+# nouveaux HPO par jour
+seen = set()
+records = []
+for d, subset in df_exp.groupby(df_exp['CREATED_AT'].dt.date)['HPO code']:
+    subset = set(subset)
+    new = subset - seen
+    records.append((d, len(new)))
+    seen |= subset
+
+hpo_new = pd.Series({pd.to_datetime(d): n for d, n in records})
+
+# lissage 30 jours
+win = 30
+
+total_smooth = hpo_total.rolling(win, center=True, min_periods=1).mean()
+new_smooth   = hpo_new.rolling(win, center=True, min_periods=1).mean()
+
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(12, 5))
+
+plt.plot(total_smooth.index, total_smooth.values,
+         color='blue', label=f'Total HPO (lissé {win}j)', linewidth=2)
+
+plt.plot(new_smooth.index, new_smooth.values,
+         color='red', label=f'Nouveaux HPO (lissé {win}j)', linewidth=2)
+
+plt.title("Flux phénotypique clinique dans le temps")
+plt.xlabel("Temps")
+plt.ylabel("Nombre de HPO par jour (lissé)")
+plt.grid(alpha=0.3)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+
+fig, ax1 = plt.subplots(figsize=(12,5))
+
+ax1.plot(total_smooth.index, total_smooth.values, color='blue', linewidth=2)
+ax1.set_ylabel("Total HPO/j", color='blue')
+ax1.tick_params(axis='y', labelcolor='blue')
+
+ax2 = ax1.twinx()
+ax2.plot(new_smooth.index, new_smooth.values, color='red', linewidth=2)
+ax2.set_ylabel("Nouveaux HPO/j", color='red')
+ax2.tick_params(axis='y', labelcolor='red')
+
+plt.title("Total vs Nouveaux HPO (lissés 30 jours)")
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+
+
+#### 
+hpo_total_cum = hpo_total.cumsum()
+hpo_new_cum   = hpo_new.cumsum()
+
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(12, 5))
+
+plt.plot(hpo_total_cum.index, hpo_total_cum.values,
+         color='blue', linewidth=2, label='HPO totaux cumulés')
+
+plt.plot(hpo_new_cum.index, hpo_new_cum.values,
+         color='red', linewidth=2, label='HPO nouveaux cumulés')
+
+plt.title("Évolution cumulative des HPO produits vs. découverts")
+plt.xlabel("Temps")
+plt.ylabel("Nombre cumulatif de HPO")
+plt.grid(alpha=0.3)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+
+
+### si très décorrélés
+fig, ax1 = plt.subplots(figsize=(12,5))
+
+ax1.plot(hpo_total_cum.index, hpo_total_cum.values, color='blue', linewidth=2)
+ax1.set_ylabel("HPO totaux cumulés", color='blue')
+ax1.tick_params(axis='y', labelcolor='blue')
+
+ax2 = ax1.twinx()
+ax2.plot(hpo_new_cum.index, hpo_new_cum.values, color='red', linewidth=2)
+ax2.set_ylabel("HPO nouveaux cumulés", color='red')
+ax2.tick_params(axis='y', labelcolor='red')
+
+plt.title("Évolution cumulative du phénotype")
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
