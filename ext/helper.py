@@ -331,3 +331,52 @@ plt.title("Densité du nombre de HPO par document")
 plt.xlabel("n_hpo")
 plt.tight_layout()
 plt.show()
+
+
+
+#### 
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+# On filtre proprement
+df_plot = df_doc[['n_sentences', 'n_hpo', 'hpo_per_sentences']].dropna()
+
+# On évite les infinities éventuelles
+df_plot = df_plot.replace([np.inf, -np.inf], np.nan).dropna()
+
+# On scale la taille des bulles pour la lisibilité
+# (évite que tout soit minuscule)
+size_factor = 200  # ⇐ ajustable
+bubble_sizes = (df_plot['hpo_per_sentences'] + 1e-6) * size_factor
+
+plt.figure(figsize=(8, 6))
+
+# Scatter enrichi
+plt.scatter(
+    df_plot['n_sentences'],
+    df_plot['n_hpo'],
+    s=bubble_sizes,
+    alpha=0.35,
+    c="#08519c",       # bleu clinique
+    edgecolor="black",
+    linewidth=0.3
+)
+
+# Trend (régression linéaire simple)
+sns.regplot(
+    data=df_plot,
+    x='n_sentences',
+    y='n_hpo',
+    scatter=False,
+    color='red',
+    line_kws={'linewidth': 2}
+)
+
+plt.xlabel("Nombre de phrases par document (n_sentences)")
+plt.ylabel("Nombre de HPO par document (n_hpo)")
+plt.title("Relation phrases ↔ HPO (taille = HPO / phrase)")
+
+plt.grid(alpha=0.2)
+plt.tight_layout()
+plt.show()
