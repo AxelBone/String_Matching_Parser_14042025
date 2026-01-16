@@ -262,3 +262,72 @@ plt.axis('off')  # si tu veux juste la courbe, sans axes
 plt.tight_layout()
 plt.savefig("density_nsent_nhpo.png", dpi=300, transparent=True)
 plt.close()
+
+
+######
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.figure(figsize=(7,5))
+sns.kdeplot(
+    df_doc["n_hpo"].dropna(),
+    fill=True,
+    color="#08519c",
+    linewidth=2,
+    alpha=0.6
+)
+plt.title("Courbe de densité du nombre de HPO / document")
+plt.xlabel("n_hpo")
+plt.tight_layout()
+plt.show()
+
+
+#### densité 
+plt.figure(figsize=(7,5))
+sns.kdeplot(
+    df_doc["n_sentences"].dropna(),
+    fill=True,
+    color="#08519c",
+    linewidth=2,
+    alpha=0.6
+)
+plt.title("Courbe de densité du nombre de phrases / document")
+plt.xlabel("n_sentences")
+plt.tight_layout()
+plt.show()
+
+
+#### Densité ratio
+df_doc["hpo_per_sentence"] = df_doc.apply(
+    lambda r: r["n_hpo"]/r["n_sentences"] if r["n_sentences"]>0 else 0,
+    axis=1
+)
+plt.figure(figsize=(7,5))
+sns.kdeplot(
+    df_doc["hpo_per_sentence"].dropna(),
+    fill=True,
+    color="#08519c",
+    linewidth=2,
+    alpha=0.6
+)
+plt.title("Densité phénotypique : HPO par phrase")
+plt.xlabel("HPO / phrase")
+plt.tight_layout()
+plt.show()
+
+
+
+#### 
+plt.figure(figsize=(7,5))
+sns.kdeplot(
+    df_doc["n_hpo"].dropna(),
+    fill=True,
+    color="#08519c",
+    linewidth=2,
+    alpha=0.4
+)
+plt.grid(alpha=0.2)
+plt.title("Densité du nombre de HPO par document")
+plt.xlabel("n_hpo")
+plt.tight_layout()
+plt.show()
