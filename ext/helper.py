@@ -380,3 +380,44 @@ plt.title("Relation phrases ↔ HPO (taille = HPO / phrase)")
 plt.grid(alpha=0.2)
 plt.tight_layout()
 plt.show()
+
+
+##### 
+import pandas as pd
+import numpy as np
+import calplot
+
+# s'assurer que CREATED_AT est datetime
+df_doc['CREATED_AT'] = pd.to_datetime(df_doc['CREATED_AT'])
+
+# total HPO par jour
+events_hpo = (
+    df_doc.groupby(df_doc['CREATED_AT'].dt.date)['n_hpo']
+          .sum()
+)
+
+# conversion en Series datetime index
+events_hpo = pd.Series(events_hpo.values, index=pd.to_datetime(events_hpo.index))
+
+calplot.calplot(
+    events_hpo,
+    how='sum',
+    cmap='Blues',
+    suptitle='Total HPO par jour',
+)
+
+
+#### 
+events_density = (
+    df_doc.groupby(df_doc['CREATED_AT'].dt.date)['hpo_per_sentence']
+          .mean()
+)
+
+events_density = pd.Series(events_density.values, index=pd.to_datetime(events_density.index))
+
+calplot.calplot(
+    events_density,
+    how='sum',
+    cmap='Purples',
+    suptitle='Densité clinique (HPO/phrase) moyenne par jour'
+)
