@@ -59,3 +59,32 @@ df["n_sentences"].describe()
 idx = 0  # ou un autre index
 print("Sentences list:", df["CLEAN_FR_SPLIT"].iloc[idx])
 print("n_sentences:", df["n_sentences"].iloc[idx])
+
+
+
+### Visu
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.figure(figsize=(10, 5))
+sns.violinplot(
+    data=df_doc,
+    x="n_words",
+    inner=None,             # pas de stats internes (on ajoute un boxplot après)
+    color="lightgray"       # couleur neutre
+)
+sns.boxplot(
+    data=df_doc,
+    x="n_words",
+    width=0.2,
+    fliersize=2,            # taille des points outliers
+    boxprops={"zorder": 3}, # pour qu'il soit au-dessus
+    whiskerprops={"zorder": 3},
+    capprops={"zorder": 3},
+    medianprops={"zorder": 3}
+)
+
+plt.title("Distribution du nombre de mots par document")
+plt.xlabel("Nombre de mots")
+plt.tight_layout()
+plt.show()
