@@ -67,24 +67,36 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 plt.figure(figsize=(10, 5))
+
+# Couleur demandée
+violin_color = "#08519c"
+box_edge_color = "#000000"  # bordure boxplot noire
+box_face_color = "#ffffff"  # intérieur blanc
+
+# Violin plot
 sns.violinplot(
     data=df_doc,
     x="n_words",
-    inner=None,             # pas de stats internes (on ajoute un boxplot après)
-    color="lightgray"       # couleur neutre
+    inner=None,
+    color=violin_color,
+    alpha=0.5  # transparence
 )
+
+# Boxplot superposé
 sns.boxplot(
     data=df_doc,
     x="n_words",
     width=0.2,
-    fliersize=2,            # taille des points outliers
-    boxprops={"zorder": 3}, # pour qu'il soit au-dessus
-    whiskerprops={"zorder": 3},
-    capprops={"zorder": 3},
-    medianprops={"zorder": 3}
+    fliersize=2,
+    linewidth=1.2,
+    boxprops=dict(facecolor=box_face_color, edgecolor=box_edge_color),
+    medianprops=dict(color=box_edge_color),
+    whiskerprops=dict(color=box_edge_color),
+    capprops=dict(color=box_edge_color),
 )
 
 plt.title("Distribution du nombre de mots par document")
 plt.xlabel("Nombre de mots")
 plt.tight_layout()
 plt.show()
+
