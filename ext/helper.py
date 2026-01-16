@@ -421,3 +421,90 @@ calplot.calplot(
     cmap='Purples',
     suptitle='Densité clinique (HPO/phrase) moyenne par jour'
 )
+
+
+
+##### TEmporal analysis
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1) S'assurer que CREATED_AT est bien en datetime
+df_doc['CREATED_AT'] = pd.to_datetime(df_doc['CREATED_AT'])
+
+# 2) Fonctions utilitaires
+def build_time_series(df, value_col, freq='M', agg='mean'):
+    """
+    df        : df_doc
+    value_col : colonne à tracer ('n_words', 'n_hpo', 'n_sentences', ...)
+    freq      : 'M' = mois, 'W' = semaine, 'Y' = année
+    agg       : 'mean' ou 'sum'
+    """
+    ts = (
+        df.set_index('CREATED_AT')[value_col]
+          .resample(freq)
+    )
+    if agg == 'sum':
+        ts = ts.sum()
+    else:
+        ts = ts.mean()
+    return ts.dropna()
+
+def plot_time_trend(ts, title, ylabel, smooth_window=12):
+    """
+    ts            : Series temporelle index datetime
+    smooth_window : fenêtre du lissage (en points, ex: 12 mois)
+    """
+    # série lissée par moyenne glissante
+    trend = ts.rolling(window=smooth_window, center=True, min_periods=1).mean()
+
+    fig, ax = plt.subplots(figsize=(12, 5))
+
+    # barres d'erreur éventuelles ? (optionnel, on ne les met pas ici)
+
+    # points noirs (valeurs observées)
+    ax.plot(ts.index, ts.values, 'o', color='black', markersize=3, label='Valeur mensuelle')
+
+    # ligne bleue reliant les points
+    ax.plot(ts.index, ts.values, color='blue', linewidth=1, label='Moyenne par période')
+
+    # courbe rouge lissée
+    ax.plot(trend.index, trend.values, color='red', linewidth=2.5, label=f'Moyenne glissante ({smooth_window} périodes)')
+
+    ax.set_title(title, fontsize=18)
+    ax.set_xlabel("Temps")
+    ax.set_ylabel(ylabel)
+    ax.grid(alpha=0.3)
+    ax.legend()
+    fig.tight_layout()
+    plt.show()
+
+# On suppose que tu as déjà df_doc['n_words']
+ts_words = build_time_series(df_doc, value_col='n_words', freq='M', agg='mean')
+
+plot_time_trend(
+    ts_words,
+    title="Longueur moyenne des documents (mots) au cours du temps",
+    ylabel="Nombre moyen de mots par document (mensuel)",
+    smooth_window=12  # lissage sur 12 mois
+)
+
+
+# df_doc['n_hpo'] déjà calculé comme len(HPO code)
+ts_hpo = build_time_series(df_doc, value_col='n_hpo', freq='M', agg='mean')
+
+plot_time_trend(
+    ts_hpo,
+    title="Nombre moyen de HPO par document au cours du temps",
+    ylabel="HPO moyens par document (mensuel)",
+    smooth_window=12
+)
+
+ts_sent = build_time_series(df_doc, value_col='n_sentences', freq='M', agg='mean')
+
+plot_time_trend(
+    ts_sent,
+    title="Nombre moyen de phrases par document au cours du temps",
+    ylabel="Phrases moyennes par document (mensuel)",
+    smooth_window=12
+)
