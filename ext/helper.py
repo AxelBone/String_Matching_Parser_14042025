@@ -100,3 +100,26 @@ plt.xlabel("Nombre de mots")
 plt.tight_layout()
 plt.show()
 
+
+#####
+
+plt.figure(figsize=(7, 5))
+sns.scatterplot(
+    data=df_doc,
+    x='n_words',
+    y='n_hpo',
+    alpha=0.3
+)
+sns.regplot(
+    data=df_doc,
+    x='n_words',
+    y='n_hpo',
+    scatter=False,
+    color='red'
+)
+
+plt.title("Nombre de mots vs nombre de HPO (document) + trend")
+plt.xlabel("Nombre de mots")
+plt.ylabel("Nombre de HPO")
+plt.tight_layout()
+plt.show()
