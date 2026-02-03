@@ -1,0 +1,56 @@
+[
+  {
+    "col1": 435,
+    "col2": 465,
+    "label": "hydrocephaly",
+    "hp_id": "HP:0000238",
+    "score": 1.0,
+    "source_file": "53O248523DHQFQ.txt",
+    "line": 1
+  },
+  {
+    "col1": 435,
+    "col2": 465,
+    "label": "hydrocephaly",
+    "hp_id": "HP:0000238",
+    "score": 1.0,
+    "source_file": "53O248523DHQFQ.txt",
+    "line": 2
+  },
+  {
+    "col1": 435,
+    "col2": 465,
+    "label": "hydrocephaly",
+    "hp_id": "HP:0000238",
+    "score": 1.0,
+    "source_file": "43240980QFDSQJKHSD.txt",
+    "line": 1
+  },
+  {
+    "col1": 435,
+    "col2": 465,
+    "label": "hydrocephaly",
+    "hp_id": "HP:0000238",
+    "score": 1.0,
+    "source_file": "43240980QFDSQJKHSD.txt",
+    "line": 2
+  },
+  {
+    "col1": 435,
+    "col2": 465,
+    "label": "hydrocephaly",
+    "hp_id": "HP:0000238",
+    "score": 1.0,
+    "source_file": "43847EZAHJAR4.txt",
+    "line": 1
+  },
+  {
+    "col1": 435,
+    "col2": 465,
+    "label": "hydrocephaly",
+    "hp_id": "HP:0000238",
+    "score": 1.0,
+    "source_file": "43847EZAHJAR4.txt",
+    "line": 2
+  }
+]

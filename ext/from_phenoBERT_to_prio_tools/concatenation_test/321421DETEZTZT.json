@@ -1,0 +1,38 @@
+[
+  {
+    "col1": 435,
+    "col2": 465,
+    "label": "hydrocephaly",
+    "hp_id": "HP:0000238",
+    "score": 1.0,
+    "source_file": "321421DETEZTZT.txt",
+    "line": 1
+  },
+  {
+    "col1": 435,
+    "col2": 465,
+    "label": "hydrocephaly",
+    "hp_id": "HP:0000238",
+    "score": 1.0,
+    "source_file": "321421DETEZTZT.txt",
+    "line": 2
+  },
+  {
+    "col1": 435,
+    "col2": 465,
+    "label": "hydrocephaly",
+    "hp_id": "HP:0000238",
+    "score": 1.0,
+    "source_file": "43082JKHSQJKFHQ.txt",
+    "line": 1
+  },
+  {
+    "col1": 435,
+    "col2": 465,
+    "label": "hydrocephaly",
+    "hp_id": "HP:0000238",
+    "score": 1.0,
+    "source_file": "43082JKHSQJKFHQ.txt",
+    "line": 2
+  }
+]
