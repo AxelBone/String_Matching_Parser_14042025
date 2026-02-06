@@ -780,3 +780,89 @@ def variant_status(n):
 patient_agg["variant_status"] = patient_agg["n_variants"].apply(variant_status)
 
 df_patient = patient_agg.reset_index()
+
+
+#############################
+#############################
+#############################
+
+from pathlib import Path
+import json
+import pandas as pd
+
+INPUT_DIR = Path("/home/prollier/data/modified_data/for_string_matching/string_matching_03032025/new_reports/")
+PREFIX = "ann_"
+SUFFIX = ".json"
+
+rows = []
+
+def dedup(seq):
+    seen = set()
+    out = []
+    for x in seq:
+        if x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out
+
+for path in INPUT_DIR.glob(f"{PREFIX}*{SUFFIX}"):
+    stem = path.stem
+    key = stem[len(PREFIX):] if stem.startswith(PREFIX) else stem
+
+    with path.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    # le format attendu: data = [ {hp_id:..., label:..., score:..., source_file:... , ...}, ... ]
+    hp_ids = []
+    labels = []
+    scores = []
+    source_files = []
+
+    if isinstance(data, list):
+        for item in data:
+            if not isinstance(item, dict):
+                continue
+
+            hp = item.get("hp_id")
+            lab = item.get("label")
+            sc = item.get("score")
+            src = item.get("source_file")
+
+            if isinstance(hp, str) and hp.startswith("HP:"):
+                hp_ids.append(hp)
+
+                # label/score/source_file sont optionnels
+                if isinstance(lab, str):
+                    labels.append(lab)
+                if isinstance(sc, (int, float)):
+                    scores.append(sc)
+                elif isinstance(sc, str):
+                    try:
+                        scores.append(float(sc))
+                    except Exception:
+                        pass
+                if isinstance(src, str):
+                    source_files.append(src)
+
+    # dédup (ordre conservé)
+    hp_ids = dedup(hp_ids)
+    labels = dedup(labels)
+    source_files = dedup(source_files)
+
+    rows.append({
+        "DOCUMENT_ID": key,          # comme avant
+        "HPO_code": hp_ids,          # liste des HP:...
+        "HPO_label": labels,         # liste des labels (si présents)
+        "source_file": source_files, # liste des .txt (si présents)
+        "score_list": scores,        # liste brute des scores (non dédupliquée)
+    })
+
+hpo = pd.DataFrame(rows)
+
+# équivalent de ton hpo["hpo_len"] = ...
+hpo["hpo_len"] = hpo["HPO_code"].apply(len)
+
+# Optionnel: statistiques rapides
+hpo["n_source_files"] = hpo["source_file"].apply(len)
+
+# hpo.head()
