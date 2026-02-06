@@ -866,3 +866,86 @@ hpo["hpo_len"] = hpo["HPO_code"].apply(len)
 hpo["n_source_files"] = hpo["source_file"].apply(len)
 
 # hpo.head()
+
+#####
+####
+from pathlib import Path
+import pandas as pd
+
+INPUT_DIR = Path("/home/prollier/data/modified_data/for_string_matching/string_matching_03032025/new_reports/")
+PREFIX = "ann_"
+SUFFIX = ".txt"   # <-- maintenant des TXT
+
+rows = []
+
+def dedup(seq):
+    seen = set()
+    out = []
+    for x in seq:
+        if x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out
+
+for path in INPUT_DIR.glob(f"{PREFIX}*{SUFFIX}"):
+    stem = path.stem
+    key = stem[len(PREFIX):] if stem.startswith(PREFIX) else stem
+
+    hpo_ids = []
+    hpo_names = []
+    scores = []
+    spans = []  # optionnel: (start, stop)
+
+    with path.open("r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            line = line.rstrip("\n")
+            if not line.strip():
+                continue
+
+            parts = line.split("\t")
+            # attendu: 5 colonnes
+            if len(parts) < 5:
+                # si tu veux être strict: raise ValueError(...)
+                continue
+
+            start_s, stop_s, name, hpo_id, score_s = parts[:5]
+
+            # HPO_code
+            if isinstance(hpo_id, str) and hpo_id.startswith("HP:"):
+                hpo_ids.append(hpo_id)
+
+            # HPO_name
+            if isinstance(name, str) and name.strip():
+                hpo_names.append(name.strip())
+
+            # start/stop (optionnel)
+            try:
+                start = int(start_s)
+                stop = int(stop_s)
+                spans.append((start, stop))
+            except Exception:
+                pass
+
+            # score
+            try:
+                scores.append(float(score_s))
+            except Exception:
+                pass
+
+    # dédup "stable"
+    hpo_ids = dedup(hpo_ids)
+    hpo_names = dedup(hpo_names)
+
+    rows.append({
+        "DOCUMENT_ID": key,
+        "HPO_code": hpo_ids,
+        "HPO_name": hpo_names,
+        "score_list": scores,   # brut (peut contenir doublons)
+        "spans": spans,         # optionnel
+        "path": str(path),
+    })
+
+hpo = pd.DataFrame(rows)
+hpo["hpo_len"] = hpo["HPO_code"].apply(len)
+
+# hpo.head()
